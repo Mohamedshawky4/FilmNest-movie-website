@@ -1,0 +1,227 @@
+
+.footer {
+    background: rgba(0, 0, 0, 0.837);
+    padding: 35px 0 10px;
+    margin-top: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #1f83ed, transparent);
+    animation: borderFlow 4s linear infinite;
+}
+
+@keyframes borderFlow {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+    padding: 0 20px;
+}
+
+.main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.footer-logo i {
+    color: #1f83ed;
+}
+.footer-description {
+    color: #999;
+    line-height: 1.6;
+    font-size: 15px;
+    max-width: 500px;
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-hover {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.social-hover:hover {
+    background: #1f83ed;
+    transform: translateY(-5px);
+}
+
+.social-hover .tooltip {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f83ed;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.social-hover:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    bottom: -30px;
+}
+
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.contact-section h3 {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.contact-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: #1f83ed;
+}
+
+.footer-form .form-group {
+    position: relative;
+    margin-top: 10px;
+}
+
+.footer-form input {
+    width: 100%;
+    padding: 12px 30px 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    color: #ffffff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.footer-form input:focus {
+    outline: none;
+    border-color: #1f83ed;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.footer-form button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1f83ed;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.footer-form button:hover {
+    background: #ffffff;
+    color: #1f83ed;
+}
+
+.contact-info {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-info li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #999;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.contact-info li:hover {
+    color: #ffffff;
+    transform: translateX(5px);
+}
+
+.contact-info i {
+    color: #1f83ed;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .footer-bottom-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .main-section, .contact-section {
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    .contact-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .contact-info li {
+        justify-content: center;
+    }
+}
