@@ -1,105 +1,97 @@
-let language = 'en';
-const apiKey = 'd19037208bd280bfc77a999c95b34789';  
+import { fetchContent, displayContent, renderPagination, fetchGenres, checkUserSession, handleAuth, fetchSearchResults } from './modules/movies-series-module.js';
+let language = localStorage.getItem('selectedLanguage') || 'en';
+
 const container = document.querySelector('.container');
+const pagination = document.querySelector('.pagination');
 const searchInput = document.querySelector('#search');
 const searchButton = document.querySelector('#searchButton');
-const languageSelector = document.querySelector('#languageSelector');
-const filterButton = document.getElementById('filterButton');
+const logButton = document.getElementById('logBut');
 const filterOptions = document.querySelector('.filter-options');
 const sortOptions = document.getElementById('sortOptions');
-const pagination = document.querySelector('.pagination');
-
-let currentGenre = '';
-let currentSortOption = 'popular';
-let allShows = [];
+const filterButton = document.getElementById('filterButton');
+let favstorage = JSON.parse(localStorage.getItem('fav')) || [];
+let liststorage = JSON.parse(localStorage.getItem('list')) || [];
 let currentPage = 1;
-const showsPerPage = 20;
-
-let favStorage = JSON.parse(localStorage.getItem('fav')) || [];
-let listStorage = JSON.parse(localStorage.getItem('list')) || [];
-
-async function fetchShows() {
-    allShows = [];
-    for (let page = 1; page <= 5; page++) {
-        let url = '';
-
-        if (currentSortOption === 'top_rated' || currentSortOption === 'popular') {
-            url = `https://api.themoviedb.org/3/tv/${currentSortOption}?api_key=${apiKey}&language=${language}&page=${page}`;
-        } else {
-            url = `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=${language}&sort_by=${currentSortOption}.desc&page=${page}`;
-        }
-
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            allShows = allShows.concat(data.results);
-        } catch (error) {
-            console.error('Error fetching TV shows:', error);
-        }
+let totalPages = 1;
+let currentGenre = '';
+let currentSortOption = 'popularity.desc';
+// 🟢 Fetch Movies with Pagination, Sorting, and Filtering
+async function fetchMovies(page = 1) {
+    const movies = await fetchContent('tv', page, currentGenre, currentSortOption,language);
+    
+    if (movies.results.length > 0) {
+        totalPages = movies.total_pages; // ✅ Get total pages from API response
+        currentPage = page; // ✅ Update current page
+        displayContent(container, movies.results, 'tv');
+        renderPagination(pagination, currentPage, totalPages, fetchMovies);
     }
-    displayShows(filterShowsByGenre(allShows));
 }
 
-function displayShows(shows) {
-    container.innerHTML = '';
-    const start = (currentPage - 1) * showsPerPage;
-    const end = start + showsPerPage;
-    const paginatedShows = shows.slice(start, end);
-
-    paginatedShows.forEach(show => {
-        const posterPath = show.poster_path ? `https://image.tmdb.org/t/p/w500/${show.poster_path}` : 'placeholder.jpg';
-
-        const card = `
-            <div class="card tv-show-item" data-id="${show.id}" data-kind="tv">
-                <a href="./tv-showsdetails.html?id=${show.id}">
-                    <i class="fa-regular fa-bookmark list-icon"></i>
-                    <i class="fa-regular fa-heart fav-icon"></i>
-                    <img src="${posterPath}" alt="${show.name || show.original_name}">
-                    <h3>${show.name || show.original_name}</h3>
-                </a>
-            </div>`;
-
-        container.innerHTML += card;
-    });
-
-    restoreIcons();
-    renderPagination(shows.length);
-}
-
-function restoreIcons() {
-    favStorage.forEach(item => {
-        const favIcon = document.querySelector(`.tv-show-item[data-id="${item.id}"] .fav-icon`);
-        if (favIcon && favIcon.classList.contains("fa-regular")) {
-            favIcon.classList.replace("fa-regular", "fa-solid");
-        }
-    });
-
-    listStorage.forEach(item => {
-        const listIcon = document.querySelector(`.tv-show-item[data-id="${item.id}"] .list-icon`);
-        if (listIcon && listIcon.classList.contains("fa-regular")) {
-            listIcon.classList.replace("fa-regular", "fa-solid");
-        }
-    });
-}
-
-document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('fav-icon') || event.target.classList.contains('list-icon')) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const parentShowItem = event.target.closest('.tv-show-item');
-        const id = parentShowItem.getAttribute('data-id');
-        const kind = parentShowItem.getAttribute('data-kind');
-        const data = { id, kind };
-
-        if (event.target.classList.contains('fav-icon')) {
-            toggleStorage(event.target, favStorage, 'fav', data);
-        } else if (event.target.classList.contains('list-icon')) {
-            toggleStorage(event.target, listStorage, 'list', data);
-        }
+// 🟢 Handle Search Functionality
+searchButton.addEventListener('click', async () => {
+    const query = searchInput.value.trim();
+    if (query) {
+        const movies = await fetchSearchResults('tv', query);
+        displayContent(container, movies, 'tv');
+    } else {
+        fetchMovies(currentPage);
     }
 });
 
+// 🟢 Handle Sorting
+sortOptions.addEventListener('change', async (event) => {
+    currentSortOption = event.target.value;
+    currentPage = 1; // Reset to first page when sorting changes
+    await fetchMovies(currentPage);
+});
+
+// 🟢 Fetch Genres and Create Filter Buttons
+async function setupGenres() {
+    try {
+        const genres = await fetchGenres('tv'); // Fetch genres from API
+
+        if (!genres || genres.length === 0) {
+            console.error("No genres found");
+            return;
+        }
+
+        filterOptions.innerHTML = '<button id="0" class="genrebutton">ALL</button>';
+
+        genres.forEach(genre => {
+            filterOptions.innerHTML += `<button id="${genre.id}" class="genrebutton">${genre.name}</button>`;
+        });
+
+        // Add event listeners for genre buttons
+        document.querySelectorAll('.genrebutton').forEach(button => {
+            button.addEventListener('click', async () => {
+                currentGenre = button.id === '0' ? '' : button.id;
+                currentPage = 1; // Reset to first page when genre changes
+                await fetchMovies(currentPage);
+            });
+        });
+
+    } catch (error) {
+        console.error("Error fetching genres:", error);
+    }
+}
+filterButton.addEventListener('click', () => {
+    console.log("object");
+    filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
+});
+languageSelector.addEventListener('click', (event) => {
+    language = event.target.textContent === 'English' ? 'en' : 'ar';
+    event.target.textContent = language === 'en' ? 'Arabic' : 'English';
+    localStorage.setItem('selectedLanguage', language);
+    
+    fetchMovies(1);
+});
+languageSelectorM.addEventListener('click', (event) => {
+    language = event.target.textContent === 'English' ? 'en' : 'ar';
+    event.target.textContent = language === 'en' ? 'Arabic' : 'English';
+    localStorage.setItem('selectedLanguage', language);
+    
+    fetchMovies(1);
+});
 function toggleStorage(icon, storage, key, data) {
     if (icon.classList.contains("fa-regular")) {
         icon.classList.replace("fa-regular", "fa-solid");
@@ -113,133 +105,54 @@ function toggleStorage(icon, storage, key, data) {
     localStorage.setItem(key, JSON.stringify(storage));
     return storage;
 }
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('fav-icon') || event.target.classList.contains('list-icon')) {
+        event.preventDefault();
+        event.stopPropagation();
 
-function renderPagination(totalShows) {
-    pagination.innerHTML = '';
-    const totalPages = Math.ceil(totalShows / showsPerPage);
+        const parentMovieItem = event.target.closest('.movie-item');
+        const id = parentMovieItem.getAttribute('data-id');
+        const kind = parentMovieItem.getAttribute('data-kind');
+        const data = { id, kind };
 
-    if (currentPage > 1) {
-        pagination.innerHTML += '<button id="prevPage">Previous</button>';
+        if (event.target.classList.contains('fav-icon')) {
+            toggleStorage(event.target, favstorage, 'fav', data);
+        } else if (event.target.classList.contains('list-icon')) {
+            toggleStorage(event.target, liststorage, 'list', data);
+        }
     }
-
-    pagination.innerHTML += `<span> Page ${currentPage} of ${totalPages} </span>`;
-
-    if (currentPage < totalPages) {
-        pagination.innerHTML += '<button id="nextPage">Next</button>';
-    }
-
-    document.getElementById('prevPage')?.addEventListener('click', () => {
-        currentPage--;
-        displayShows(filterShowsByGenre(allShows));
+});
+function restoreIcons() {
+    favstorage.forEach(item => {
+        const favIcon = document.querySelector(`.movie-item[data-id="${item.id}"] .fav-icon`);
+        if (favIcon && favIcon.classList.contains("fa-regular")) {
+            favIcon.classList.replace("fa-regular", "fa-solid");
+        }
     });
 
-    document.getElementById('nextPage')?.addEventListener('click', () => {
-        currentPage++;
-        displayShows(filterShowsByGenre(allShows));
+    liststorage.forEach(item => {
+        const listIcon = document.querySelector(`.movie-item[data-id="${item.id}"] .list-icon`);
+        if (listIcon && listIcon.classList.contains("fa-regular")) {
+            listIcon.classList.replace("fa-regular", "fa-solid");
+        }
     });
 }
+// 🟢 Initialize Everything
+checkUserSession(logButton);
+handleAuth(logButton);
+setupGenres();
+fetchMovies();
 
-function filterShowsByGenre(shows) {
-    if (currentGenre) {
-        return shows.filter(show => show.genre_ids.includes(parseInt(currentGenre)));
-    }
-    return shows;
-}
+const menu = document.getElementById("menu-btn");
+const nav = document.querySelector(".mobile-navbar"); // Correctly targets the <nav>
 
-searchButton.addEventListener('click', () => {
-    const query = searchInput.value.trim();
-    currentPage = 1;
-    if (query) {
-        fetchSearchResults(query);
-    } else {
-        fetchShows();
-    }
-});
-
-searchInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        searchButton.click();
-    }
-});
-
-languageSelector.addEventListener('click', (event) => {
-    language = event.target.textContent === 'English' ? 'en' : 'ar';
-    event.target.textContent = language === 'en' ? 'Arabic' : 'English';
-    currentPage = 1;
-    fetchShows();
-});
-
-filterButton.addEventListener('click', () => {
-    filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
-});
-
-async function fetchGenres() {
-    try {
-        const response = await fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKey}&language=${language}`);
-        const data = await response.json();
-        displayGenres(data.genres);
-    } catch (error) {
-        console.error('Error fetching genres:', error);
-    }
-}
-
-function displayGenres(genres) {
-    filterOptions.innerHTML = '<button id="0" class="genrebutton">ALL</button>';
-    genres.forEach(genre => {
-        filterOptions.innerHTML += `<button id="${genre.id}" class="genrebutton">${genre.name}</button>`;
+if (menu && nav) {
+    menu.addEventListener("click", () => {
+        nav.classList.toggle("active");
     });
-    document.querySelectorAll('.genrebutton').forEach(button => {
-        button.addEventListener('click', () => {
-            currentGenre = button.id;
-            if (currentGenre === '0') {
-                currentGenre = '';
-            }
-            currentPage = 1;
-            displayShows(filterShowsByGenre(allShows));
-        });
-    });
+} else {
+    console.error("Menu button or navigation bar not found!");
 }
 
-sortOptions.addEventListener('change', () => {
-    currentSortOption = sortOptions.value;
-    currentPage = 1;
-    fetchShows();
-});
 
-async function fetchSearchResults(query) {
-    try {
-        const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${query}&api_key=${apiKey}&language=${language}`);
-        const data = await response.json();
-        displayShows(filterShowsByGenre(data.results));
-    } catch (error) {
-        console.error('Error fetching search results:', error);
-    }
-}
 
-fetchGenres();
-fetchShows();function checkUserSession() {
-    const user = sessionStorage.getItem('userEmail');
-    const pass = sessionStorage.getItem('userPassword');
-    let logbut= document.getElementById('logBut');
-    if (user && pass) {
-      console.log('User is logged in:', user);
-      
-      logbut.innerText = 'Logout';
-      return true;
-    } else{
-      logbut.innerText = 'Login';
-      return false;
-    }
-  }
-  checkUserSession();
-  let logBut=document.getElementById('logBut');
-  logBut.addEventListener('click', () => {
-    if(logBut.innerText === 'Logout'){
-      console.log("object");
-      sessionStorage.removeItem('userEmail');
-      sessionStorage.removeItem('userPassword');
-      window.location.reload();
-    }
-  })
-  
-  

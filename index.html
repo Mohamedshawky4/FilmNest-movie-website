@@ -7,16 +7,23 @@
         <link rel="stylesheet" href="./styles/mainstyle.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="./styles/footer.css">
+        <link rel="stylesheet" href="./styles/header.css">
 
 
         <!-- <link rel="stylesheet" href="movies.css"> -->
     </head>
     <body>
         <header>
+        
+              
             
            
             <div class="header-content">
-                <nav>
+                <div class="mob-logo logo">
+                    <i class="fa-solid fa-film"></i> 
+
+                </div>
+                <nav id="navbar">
                     <div class="logo "> 
                         <i class="fa-solid fa-film"></i> 
                         
@@ -34,8 +41,25 @@
              </nav>
              <div class="right-side">
                  <a id="languageSelector">Arabic</a>
-                    <a href="./htmlpages/login.html" id="logBut">Login</a></div>
+                <a href="./htmlpages/login.html" id="logBut">Login</a>
             </div>
+            <div class="icons" >
+                <div class="fas fa-bars" id="menu-btn"></div>
+                
+                  
+            </div>
+            </div>
+            <nav class="mobile-navbar" >
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="./index.html" >Home</a></li>
+                    <a id="languageSelectorM">Arabic</a>
+                    <li class="nav-item"><a href="./htmlpages/movies.html" >Movies</a></li>
+                    <li class="nav-item"><a href="./htmlpages/tv-shows.html" >Series</a></li>
+                    <li class="nav-item"><a href="./htmlpages/lists.html">lists</a></li>
+                    <li class="nav-item"><a href="./htmlpages/actors.html" >actors</a></li>
+                    <li class="nav-item"><a href="./htmlpages/login.html" >Login</a></li>
+                </ul>
+            </nav>
         </header>
             <div class="slider-container">
                 <div class="right-arrow main-arrow">
@@ -129,25 +153,21 @@
             <div class="footer-section main-section">
                 <div class="footer-logo">
                     <i class="fa-solid fa-film"></i>
-                    <span>Netflix</span>
+                    <span>FilmNest</span>
                 </div>
                 <p class="footer-description">Your ultimate streaming destination for the latest movies, TV shows, and exclusive original content.</p>
                 <div class="social-links">
                     <a href="#" class="social-hover">
                         <i class="fab fa-facebook"></i>
-                        <span class="tooltip">Facebook</span>
                     </a>
                     <a href="#" class="social-hover">
                         <i class="fab fa-twitter"></i>
-                        <span class="tooltip">Twitter</span>
                     </a>
                     <a href="#" class="social-hover">
                         <i class="fab fa-instagram"></i>
-                        <span class="tooltip">Instagram</span>
                     </a>
                     <a href="#" class="social-hover">
                         <i class="fab fa-youtube"></i>
-                        <span class="tooltip">YouTube</span>
                     </a>
                 </div>
             </div>
@@ -165,15 +185,15 @@
                 <ul class="contact-info">
                     <li>
                         <i class="fas fa-envelope"></i>
-                        <span>support@netflix.com</span>
+                        <span>support@FilmNest.com</span>
                     </li>
                     <li>
                         <i class="fas fa-phone"></i>
-                        <span>+1 234 567 890</span>
+                        <span>+201153971557</span>
                     </li>
                     <li>
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>New York, NY 10012</span>
+                        <span>Cairo,Egypt</span>
                     </li>
                 </ul>
             </div>

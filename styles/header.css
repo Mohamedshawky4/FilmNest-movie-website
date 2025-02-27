@@ -1,0 +1,159 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html {
+    font-size: 16px;
+}
+body {
+    font-family: "Cairo", sans-serif;
+    background-color:  #181616;
+    color: #ffffff;
+    padding-top: var(--nav-height);
+}
+
+a:hover {
+    background: #1f83ed;
+    transform: translateY(-2px);
+    color: white;
+}
+
+img {
+    max-width: 100%;
+}
+header{
+    position: fixed;
+    height: 75px;
+    z-index: 111;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.837);
+    width: 100%;
+}
+header .header-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+header #navbar{
+    margin-left: 30px;
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 40px;
+    gap: 5px;
+}
+header .right-side {
+    display: flex;
+    align-items: end;
+    gap: 30px;
+    margin-right: 60px;
+    font-size: 1.2rem;
+}
+header .logo{
+   display: flex; 
+   margin-right: 10px;
+   font-size: 25px;
+}
+.logo i {
+    display: flex;
+    color: #1f83ed;
+    align-items: center;
+    animation: bounce 1.2s infinite ease-in-out;
+    
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.icons div {
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.4rem;
+    margin-right: 2rem;
+}
+
+.icons div:hover{
+    color: #1f83ed;
+}
+header .icons{
+    display: none;
+}
+.mobile-navbar {
+    position: absolute;
+    top: 100%;
+    right: -100%;
+    background-color: hsla(0, 0%, 0%, 0.885);
+    width: 160px;
+    height: calc(100vh - 70px);
+    transition: right 0.5s ease;
+    display: flex;
+    
+}
+.mobile-navbar.active{
+    right: 0;
+} 
+header .mob-logo{
+    display: none; 
+ }
+@media (max-width: 768px) {
+    header .icons{
+        display: block;
+        position: absolute;
+        right: 15px;
+        top: 25px;
+    }
+   
+    header #navbar{
+        display: none;
+    }
+    header .right-side{
+        display: none;
+    }
+    header .mob-logo{
+        display: block; 
+        position: absolute;
+        left: 35px;
+        top: 25px;
+     }
+   
+    .nav-list{
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        line-height: 20px;
+    }
+    .mobile-navbar a {
+        background: #00050a;
+        color: white;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        border-radius: 0;
+        transition: all 0.3s ease-in-out;
+        text-decoration: none;
+        padding: 0;
+    }
+     .mobile-navbar a:hover {
+        border-bottom: .2rem solid #1f83ed;
+        padding-bottom: .5rem;
+     }
+
+    .mobile-navbar.active {
+        right: 0;
+        
+    }
+}
+

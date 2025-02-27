@@ -97,3 +97,17 @@ loginForm.addEventListener('submit', (e) => {
     
    
 });
+
+const menu = document.getElementById("menu-btn");
+const nav = document.querySelector(".mobile-navbar"); // Correctly targets the <nav>
+
+if (menu && nav) {
+    menu.addEventListener("click", () => {
+        nav.classList.toggle("active");
+    });
+} else {
+    console.error("Menu button or navigation bar not found!");
+}
+
+
+

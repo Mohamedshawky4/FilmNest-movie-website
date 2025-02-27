@@ -7,20 +7,28 @@
         <link rel="stylesheet" href="../styles/movies.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="../styles/footer.css">
+        <link rel="stylesheet" href="../styles/header.css">
+
 
     </head>
     <body>
         <header>
+        
+              
             
            
             <div class="header-content">
-                <nav>
+                <div class="mob-logo logo">
+                    <i class="fa-solid fa-film"></i> 
+
+                </div>
+                <nav id="navbar">
                     <div class="logo "> 
                         <i class="fa-solid fa-film"></i> 
                         
                        </div>
                    
-                    <a class="main-button" href="../index.html">Netflix</a> 
+                    <a class="main-button" href="../index.html">FilmNest</a> 
                     <a href="../htmlpages/movies.html">Movies</a>
                     <a href="../htmlpages/tv-shows.html">Series</a>
                     <a href="../htmlpages/lists.html">lists</a>
@@ -32,8 +40,25 @@
              </nav>
              <div class="right-side">
                  <a id="languageSelector">Arabic</a>
-                    <a href="./login.html" id="logBut">Login</a></div>
+                <a href="../htmlpages/login.html" id="logBut">Login</a>
             </div>
+            <div class="icons" >
+                <div class="fas fa-bars" id="menu-btn"></div>
+                
+                  
+            </div>
+            </div>
+            <nav class="mobile-navbar" >
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="../index.html" >Home</a></li>
+                    <a id="languageSelectorM">Arabic</a>
+                    <li class="nav-item"><a href="../htmlpages/movies.html" >Movies</a></li>
+                    <li class="nav-item"><a href="../htmlpages/tv-shows.html" >Series</a></li>
+                    <li class="nav-item"><a href="../htmlpages/lists.html">lists</a></li>
+                    <li class="nav-item"><a href="../htmlpages/actors.html" >actors</a></li>
+                    <li class="nav-item"><a href="../htmlpages/login.html" >Login</a></li>
+                </ul>
+            </nav>
         </header>
 
         <div class="search-container">
@@ -45,8 +70,14 @@
         <div class="sort-filter-container">
             <!-- Sort Dropdown -->
             <select id="sortOptions">
-                <option value="popular">Sort by Popular</option>
-                <option value="top_rated">Sort by Top Rated</option>
+                <option value="popularity.desc">Most Popular</option>
+                <option value="popularity.asc">Least Popular</option>
+                <option value="vote_average.desc">Highest Rated</option>
+                <option value="vote_average.asc">Lowest Rated</option>
+                <option value="first_air_date.desc">Newest</option>
+                <option value="first_air_date.asc">Oldest</option>
+                <option value="name.asc">A-Z (Title)</option>
+                <option value="name.desc">Z-A (Title)</option>
             </select>
 
             <!-- Filter Button -->
@@ -54,40 +85,33 @@
 
         <!-- Filter Options (hidden by default) -->
          <div class="options">
-            <button id="filterButton">Filter</button>
+            <button id="filterButton">Filter <i class="fa-solid fa-sort-down"></i></button>
             <div class="filter-options" style="display: none;">
             </div>
          
-
-        
-        
-
         <div class="container"></div>
         <div class="pagination"></div>
+
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-section main-section">
                     <div class="footer-logo">
                         <i class="fa-solid fa-film"></i>
-                        <span>Netflix</span>
+                        <span>FilmNest</span>
                     </div>
                     <p class="footer-description">Your ultimate streaming destination for the latest movies, TV shows, and exclusive original content.</p>
                     <div class="social-links">
                         <a href="#" class="social-hover">
                             <i class="fab fa-facebook"></i>
-                            <span class="tooltip">Facebook</span>
                         </a>
                         <a href="#" class="social-hover">
                             <i class="fab fa-twitter"></i>
-                            <span class="tooltip">Twitter</span>
                         </a>
                         <a href="#" class="social-hover">
                             <i class="fab fa-instagram"></i>
-                            <span class="tooltip">Instagram</span>
                         </a>
                         <a href="#" class="social-hover">
                             <i class="fab fa-youtube"></i>
-                            <span class="tooltip">YouTube</span>
                         </a>
                     </div>
                 </div>
@@ -105,22 +129,22 @@
                     <ul class="contact-info">
                         <li>
                             <i class="fas fa-envelope"></i>
-                            <span>support@netflix.com</span>
+                            <span>support@FilmNest.com</span>
                         </li>
                         <li>
                             <i class="fas fa-phone"></i>
-                            <span>+1 234 567 890</span>
+                            <span>+201153971557</span>
                         </li>
                         <li>
                             <i class="fas fa-map-marker-alt"></i>
-                            <span>New York, NY 10012</span>
+                            <span>Cairo,Egypt</span>
                         </li>
                     </ul>
                 </div>
             </div>
            
-        </footer>   
+        </footer>  
 
-        <script src="../scripts/tv.js"></script>
+        <script type="module" src="../scripts/tv.js"></script>
     </body>
 </html>

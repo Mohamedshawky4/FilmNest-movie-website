@@ -11,6 +11,34 @@ body {
 a{
     text-decoration: none;
 }
+
+header a {
+    background: #00050a;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+.main-button{
+    color: #1f83ed;
+    font-weight: 750;
+    font-size: 22px;
+}
+
+header a:hover {
+    background: #1f83ed;
+    transform: translateY(-2px);
+    color: white;
+}
+
+img {
+    max-width: 100%;
+}
 header{
     position: fixed;
     height: 75px;
@@ -25,7 +53,7 @@ header .header-content{
     align-items: center;
     height: 100%;
 }
-header nav{
+header #navbar{
     margin-left: 30px;
     width: 400px;
     display: flex;
@@ -54,11 +82,6 @@ header .logo{
     animation: bounce 1.2s infinite ease-in-out;
     
 }
-.main-button{
-    color: #1f83ed;
-    font-weight: 750;
-    font-size: 22px;
-}
 
 @keyframes bounce {
     0%, 100% {
@@ -69,43 +92,97 @@ header .logo{
     }
 }
 
-header a {
-    background: #00050a;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: 500;
-    border: none;
+.icons div {
+    color: #fff;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    text-decoration: none;
+    font-size: 1.4rem;
+    margin-right: 2rem;
 }
 
-header a:hover {
-    background: #1f83ed;
-    transform: translateY(-2px);
-    color: white;
+.icons div:hover{
+    color: #1f83ed;
+}
+header .icons{
+    display: none;
+}
+.mobile-navbar {
+    position: absolute;
+    top: 100%;
+    right: -100%;
+    background-color: hsla(0, 0%, 0%, 0.885);
+    width: 160px;
+    height: calc(100vh - 70px);
+    transition: right 0.5s ease;
+    display: flex;
+    
+}
+.mobile-navbar.active{
+    right: 0;
+} 
+header .mob-logo{
+    display: none; 
+ }
+@media (max-width: 768px) {
+    header .icons{
+        display: block;
+        position: absolute;
+        right: 15px;
+        top: 25px;
+    }
+   
+    header #navbar{
+        display: none;
+    }
+    header .right-side{
+        display: none;
+    }
+    header .mob-logo{
+        display: block; 
+        position: absolute;
+        left: 35px;
+        top: 25px;
+     }
+   
+    .nav-list{
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        line-height: 20px;
+    }
+    .mobile-navbar a {
+        background: #00050a;
+        color: white;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        border-radius: 0;
+        transition: all 0.3s ease-in-out;
+        text-decoration: none;
+        padding: 0;
+    }
+     .mobile-navbar a:hover {
+        border-bottom: .2rem solid #1f83ed;
+        padding-bottom: .5rem;
+     }
+
+    .mobile-navbar.active {
+        right: 0;
+        
+    }
 }
 
 
 .container2 {
     display: flex;
     flex-direction: row;
-    /* align-items: center; */
-    /* justify-content: center; */
     gap: 30px;
     padding: 20px;
     margin-top: 80px;
 }
 
-
-/* .img-container {
-    display: flex;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-} */
 
 .img-container img {
     width: 400px;
@@ -130,18 +207,20 @@ header a:hover {
     margin-bottom: 10px;
 }
 
+
 .p-container {
-max-width:1100px;
+max-width:1000px;
 }
 .p-container p {
     font-size: 16px;
     line-height: 1.6;
 }
-
+.lists-contain{
+    display: flex;
+}
 
 .rating, .date {
     font-size: 16px;
-    /* font-weight: bold; */
     color: #ffffff;
     margin-top: 10px;
 }
@@ -150,8 +229,6 @@ max-width:1100px;
     gap: 20px;
     padding: 20px;
     overflow-x: hidden;
-    
-    
 }
 .card{
     flex-shrink: 0;
@@ -164,6 +241,61 @@ max-width:1100px;
     transition: transform 0.3s ease-in-out;
 
 }
+.trailer-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1f83ed;
+    color: white;
+    padding: 0.8rem 1rem;
+    margin-top: 1rem;
+    border-radius: 7px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+.trailer-btn:hover {
+    background: #034b98;    
+}
+
+.trailer-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: all 1s ease-in-out;
+    visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+
+}
+
+.trailer-content {
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+}
+
+#trailer-video {
+    width: 100%;
+    height: 400px;
+}
+
+.close-btn {
+    position: absolute;
+    top: -4px;
+    right: 5px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+}
+
 .card img {
     width: 100%;
     height: 250px;
@@ -214,8 +346,21 @@ h2,h1{
     text-align: center;
     margin-top: 15PX;
 }
+.related-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    .p-container {
+        display: flex;
+        flex-direction: column;
+        }
+    
+        .lists-contain{
+            justify-content: space-around;
+        }
     .container2 {
         flex-direction: column;
         text-align: center;
@@ -352,3 +497,4 @@ h2,h1{
 .list-icon:hover, .fav-icon:hover {
     transform: scale(1.2);
 }
+

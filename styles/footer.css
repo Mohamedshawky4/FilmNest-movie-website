@@ -16,7 +16,7 @@
     width: 100%;
     height: 2px;
     background: linear-gradient(90deg, transparent, #1f83ed, transparent);
-    animation: borderFlow 4s linear infinite;
+    animation: borderFlow 4s linear infinite;   
 }
 
 @keyframes borderFlow {
@@ -82,26 +82,7 @@
     transform: translateY(-5px);
 }
 
-.social-hover .tooltip {
-    position: absolute;
-    bottom: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1f83ed;
-    color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
 
-.social-hover:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-    bottom: -30px;
-}
 
 .contact-section {
     display: flex;

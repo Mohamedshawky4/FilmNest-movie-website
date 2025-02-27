@@ -1,7 +1,9 @@
 const apiKey = 'd19037208bd280bfc77a999c95b34789';
 const baseApiUrl = 'https://api.themoviedb.org/3';
-let language = 'en';
+let language = localStorage.getItem('selectedLanguage') || 'en';
+
 const languageSelector = document.querySelector('#languageSelector');
+const languageSelectorM = document.querySelector('#languageSelectorM');
 let listslider = document.getElementById('list');
 let favslider = document.getElementById('fav');
 let liststorage = JSON.parse(localStorage.getItem('list')) || [];
@@ -35,7 +37,7 @@ async function fetchMovieDetails(id, kind, type) {
 
 function displayMovie(item, type) {
     let sliderContainer = document.getElementById(type);
-    const movieitem = `<a href="./htmlpages/moviedetail.html?id=${item.id}" class="movie-item movie" data-id="${item.id}" data-kind="movie">
+    const movieitem = `<a href="../htmlpages/moviedetail.html?id=${item.id}" class="movie-item movie" data-id="${item.id}" data-kind="movie">
         <i class="fa-regular fa-bookmark list-icon"></i>
         <i class="fa-regular fa-heart fav-icon"></i>
         <img src="https://image.tmdb.org/t/p/w500/${item.poster_path}" alt="${item.title}">
@@ -56,7 +58,7 @@ function displayMovie(item, type) {
 
 function displayShow(item, type) {
     let sliderContainer = document.getElementById(type);
-    const movieitem = `<a href="./htmlpages/tv-showsdetails.html?id=${item.id}" class="movie-item tv" data-id="${item.id}" data-kind="tv">
+    const movieitem = `<a href="../htmlpages/tvdetail.html?id=${item.id}" class="movie-item tv" data-id="${item.id}" data-kind="tv">
         <i class="fa-regular fa-bookmark list-icon"></i>
         <i class="fa-regular fa-heart fav-icon"></i>
         <img src="https://image.tmdb.org/t/p/w500/${item.poster_path}" alt="${item.name}">
@@ -78,6 +80,7 @@ function displayShow(item, type) {
 languageSelector.addEventListener('click', (event) => {
     language = event.target.textContent === 'English' ? 'en' : 'ar';
     event.target.textContent = language === 'en' ? 'Arabic' : 'English';
+    localStorage.setItem('selectedLanguage', language);
     listslider.innerHTML = '';
     favslider.innerHTML = '';
     liststorage.forEach((movie) => {
@@ -87,6 +90,20 @@ languageSelector.addEventListener('click', (event) => {
         fetchMovieDetails(movie.id, movie.kind, "fav");
     });
 });
+languageSelectorM.addEventListener('click', (event) => {
+    language = event.target.textContent === 'English' ? 'en' : 'ar';
+    event.target.textContent = language === 'en' ? 'Arabic' : 'English';
+    localStorage.setItem('selectedLanguage', language);
+    listslider.innerHTML = '';
+    favslider.innerHTML = '';
+    liststorage.forEach((movie) => {
+        fetchMovieDetails(movie.id, movie.kind, "list");
+    });
+    favstorage.forEach((movie) => {
+        fetchMovieDetails(movie.id, movie.kind, "fav");
+    });
+});
+
 
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('fav-icon') || event.target.classList.contains('list-icon')) {
@@ -270,4 +287,17 @@ function initializeSlider(type) {
       window.location.reload();
     }
   })
+  const menu = document.getElementById("menu-btn");
+const nav = document.querySelector(".mobile-navbar"); // Correctly targets the <nav>
+
+if (menu && nav) {
+    menu.addEventListener("click", () => {
+        nav.classList.toggle("active");
+    });
+} else {
+    console.error("Menu button or navigation bar not found!");
+}
+
+
+
   

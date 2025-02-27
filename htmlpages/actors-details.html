@@ -7,14 +7,22 @@
     <link rel="stylesheet" href="../styles/moviedetail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/footer.css">
+    <!-- <link rel="stylesheet" href="../styles/header.css"> -->
+
 
 </head>
     <body>
         <header>
+        
+              
             
            
             <div class="header-content">
-                <nav>
+                <div class="mob-logo logo">
+                    <i class="fa-solid fa-film"></i> 
+
+                </div>
+                <nav id="navbar">
                     <div class="logo "> 
                         <i class="fa-solid fa-film"></i> 
                         
@@ -32,8 +40,25 @@
              </nav>
              <div class="right-side">
                  <a id="languageSelector">Arabic</a>
-                    <a href="./login.html" id="logBut">Login</a></div>
+                <a href="../htmlpages/login.html" id="logBut">Login</a>
             </div>
+            <div class="icons" >
+                <div class="fas fa-bars" id="menu-btn"></div>
+                
+                  
+            </div>
+            </div>
+            <nav class="mobile-navbar" >
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="../index.html" >Home</a></li>
+                    <a id="languageSelectorM">Arabic</a>
+                    <li class="nav-item"><a href="../htmlpages/movies.html" >Movies</a></li>
+                    <li class="nav-item"><a href="../htmlpages/tv-shows.html" >Series</a></li>
+                    <li class="nav-item"><a href="../htmlpages/lists.html">lists</a></li>
+                    <li class="nav-item"><a href="../htmlpages/actors.html" >actors</a></li>
+                    <li class="nav-item"><a href="../htmlpages/login.html" >Login</a></li>
+                </ul>
+            </nav>
         </header>
             
             <div class="container2">
@@ -42,62 +67,58 @@
            
         
         
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-section main-section">
-                    <div class="footer-logo">
-                        <i class="fa-solid fa-film"></i>
-                        <span>Netflix</span>
-                    </div>
-                    <p class="footer-description">Your ultimate streaming destination for the latest movies, TV shows, and exclusive original content.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-hover">
-                            <i class="fab fa-facebook"></i>
-                            <span class="tooltip">Facebook</span>
-                        </a>
-                        <a href="#" class="social-hover">
-                            <i class="fab fa-twitter"></i>
-                            <span class="tooltip">Twitter</span>
-                        </a>
-                        <a href="#" class="social-hover">
-                            <i class="fab fa-instagram"></i>
-                            <span class="tooltip">Instagram</span>
-                        </a>
-                        <a href="#" class="social-hover">
-                            <i class="fab fa-youtube"></i>
-                            <span class="tooltip">YouTube</span>
-                        </a>
-                    </div>
-                </div>
-        
-                <div class="footer-section contact-section">
-                    <h3>Get in Touch</h3>
-                    <form class="footer-form">
-                        <div class="form-group">
-                            <input type="email" placeholder="Enter your email" required>
-                            <button type="submit">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-section main-section">
+                        <div class="footer-logo">
+                            <i class="fa-solid fa-film"></i>
+                            <span>FilmNest</span>
                         </div>
-                    </form>
-                    <ul class="contact-info">
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <span>support@netflix.com</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <span>+1 234 567 890</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>New York, NY 10012</span>
-                        </li>
-                    </ul>
+                        <p class="footer-description">Your ultimate streaming destination for the latest movies, TV shows, and exclusive original content.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-hover">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" class="social-hover">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-hover">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-hover">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+            
+                    <div class="footer-section contact-section">
+                        <h3>Get in Touch</h3>
+                        <form class="footer-form">
+                            <div class="form-group">
+                                <input type="email" placeholder="Enter your email" required>
+                                <button type="submit">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <ul class="contact-info">
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <span>support@FilmNest.com</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <span>+201153971557</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Cairo,Egypt</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-           
-        </footer>  
+               
+            </footer>  
         <script src="../scripts/actorsdetailes.js"></script>
     </body>
 </html>

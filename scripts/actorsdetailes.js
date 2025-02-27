@@ -1,18 +1,21 @@
 const id = location.search.split('=')[1];
 const apiKey = 'd19037208bd280bfc77a999c95b34789';
-let language = 'en';
+let language = localStorage.getItem('selectedLanguage') || 'en';
 
-const apiUrl = `https://api.themoviedb.org/3/person/${id}?api_key=${apiKey}&language=${language}`;
-const topWorksUrl = `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=${apiKey}&language=${language}`;
+
+let apiUrl = `https://api.themoviedb.org/3/person/${id}?api_key=${apiKey}&language=${language}`;
+let topWorksUrl = `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=${apiKey}&language=${language}`;
 
 const container = document.querySelector('.container2');
 
 const languageSelector = document.querySelector('#languageSelector');
+const languageSelectorM = document.querySelector('#languageSelectorM');
 
 async function details(url) {
-    const response = await fetch(url);
+    let response = await fetch(url);
     const data = await response.json();
     console.log(data);
+    container.innerHTML = '';
     
     const card = `  
     <div class="img-container movie-item" data-id="${data.id}" data-kind="movie">
@@ -49,8 +52,9 @@ function displayTopWorks(works) {
     topWorksContainer.innerHTML = '';
     works.forEach(work => {
         console.log(work);
-       let card=`<div class="related-card">
-            <a href="./moviedetail.html?id=${work.id}">
+        let detailPage = work.media_type === 'movie' ? 'moviedetail.html' : 'tvdetail.html'; 
+        let card = `<div class="related-card">
+            <a href="./${detailPage}?id=${work.id}">
                <img src="https://image.tmdb.org/t/p/w500/${work.poster_path || work.profile_path}" alt="${work.title || work.name}">
                <div class="related-title">${work.title || work.name}</div>
             </a>
@@ -84,3 +88,34 @@ logBut.addEventListener('click', () => {
         window.location.reload();
     }
 });
+const menu = document.getElementById("menu-btn");
+const nav = document.querySelector(".mobile-navbar"); // Correctly targets the <nav>
+
+if (menu && nav) {
+    menu.addEventListener("click", () => {
+        nav.classList.toggle("active");
+    });
+} else {
+    console.error("Menu button or navigation bar not found!");
+}
+languageSelector.addEventListener('click', (event) => {
+    language = event.target.textContent === 'English' ? 'en' : 'ar';
+    event.target.textContent = language === 'en' ? 'Arabic' : 'English';
+    localStorage.setItem('selectedLanguage', language);
+    apiUrl = `https://api.themoviedb.org/3/person/${id}?api_key=${apiKey}&language=${language}`;
+    details(apiUrl);
+    topWorksUrl = `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=${apiKey}&language=${language}`;
+    fetchTopWorks(topWorksUrl);
+    
+});
+languageSelectorM.addEventListener('click', (event) => {
+    language = event.target.textContent === 'English' ? 'en' : 'ar';
+    event.target.textContent = language === 'en' ? 'Arabic' : 'English';
+    localStorage.setItem('selectedLanguage', language);
+    apiUrl = `https://api.themoviedb.org/3/person/${id}?api_key=${apiKey}&language=${language}`;
+    details(apiUrl);
+    topWorksUrl = `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=${apiKey}&language=${language}`;
+    fetchTopWorks(topWorksUrl);
+    
+});
+

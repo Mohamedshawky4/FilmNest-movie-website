@@ -1,10 +1,13 @@
-
-
-
+import { fetchData } from './modules/package.js';
 const slides = document.querySelectorAll('.movies-slide');
+const API_KEY = 'd19037208bd280bfc77a999c95b34789'; // Replace with your TMDb API key
+const BASE_URL = 'https://api.themoviedb.org/3';
 const languageSelector = document.querySelector('#languageSelector');
-let language = 'en';
-  
+const languageSelectorM = document.querySelector('#languageSelectorM');
+let language = localStorage.getItem('selectedLanguage') || 'en';
+let mainslide=document.querySelector('.main-slider');
+
+  //mini slides arrows
 function slideshow(slides) {
   slides.forEach(slide => {
     const rightArrow = slide.closest('.container').querySelector('.right-arrow');
@@ -13,7 +16,6 @@ function slideshow(slides) {
     const items = slide.children;
     const totalItems = items.length;
     // console.log(totalItems);
-
     
     const itemWidth = `200` ;
      const visibleItems = Math.floor(slide.offsetWidth / itemWidth);
@@ -33,37 +35,12 @@ function slideshow(slides) {
  
   });
 }
-
-
-
-
-const fetchTopRated = async (type, language) => {
-    try {
-      const apiKey = 'd19037208bd280bfc77a999c95b34789';  // Replace with your TMDb API key
-      const endpoints = {
-        movies: `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=${language}&page=1`,
-        series: `https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=${language}&page=1`,
-        popularMovies: `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=${language}&page=1`,
-        popularSeries: `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=${language}&page=1`
-      };
-  
-      const url = endpoints[type];
-      const response = await fetch(url);
-      const data = await response.json();
-  
-      return data.results //.slice(0, 10); // Get top 10 results
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  
-  // Example usage:
   
   const loadSliders = async () => {
-    const topRatedMovies = await fetchTopRated('movies', language);
-    const topRatedSeries = await fetchTopRated('series',language);
-    const popularMovies = await fetchTopRated('popularMovies',language);
-    const popularSeries = await fetchTopRated('popularSeries',language);
+    const topRatedMovies = await fetchData('top_rated', 'movie', language);
+  const popularMovies = await fetchData('popular', 'movie', language);
+  const topRatedSeries = await fetchData('top_rated', 'tv', language);
+  const popularSeries = await fetchData('popular', 'tv', language);
   
     // Display the results in your sliders
     displaySlider('toprated-movies', topRatedMovies);
@@ -71,7 +48,7 @@ const fetchTopRated = async (type, language) => {
     displaySlider('toprated-series', topRatedSeries);
     displaySlider('popular-series', popularSeries);
   };
-  let mainslide=document.querySelector('.main-slider');
+ 
   const displaySlider = (category, data) => {
     let sliderContainer = document.getElementById(`${category}`);
     sliderContainer.innerHTML = '';
@@ -152,7 +129,7 @@ const fetchTopRated = async (type, language) => {
                                   ${item.overview}
                               </div>
                               <div class="item-action top-down delay-6">
-                                  <a href="./htmlpages/tv-showsdetails.html?id=${item.id}" class="btn btn-hover">
+                                  <a href="./htmlpages/tvdetail.html?id=${item.id}" class="btn btn-hover">
                                       
                                       <span>Watch now</span>
                                   </a>
@@ -167,7 +144,7 @@ const fetchTopRated = async (type, language) => {
       // console.log(item);
       
       // console.log(item);
-      const movieitem=`<a href="./htmlpages/tv-showsdetails.html?id=${item.id}" class="movie-item tv">
+      const movieitem=`<a href="./htmlpages/tvdetail.html?id=${item.id}" class="movie-item tv">
       <i class="fa-regular fa-bookmark list-icon"></i>
       <i class="fa-regular fa-heart fav-icon"></i>
 
@@ -196,16 +173,11 @@ let fav=document.querySelectorAll('.fav-icon');
 let list=document.querySelectorAll('.list-icon');    
   };
   
-  // Call the function to load the sliders
   loadSliders();
-
-//   slideshow(slides);
-//   }, 3000);
- 
-
-
+     // toggle lang
   languageSelector.addEventListener('click', (event) => {
    language = event.target.textContent === 'English' ? 'en' : 'ar'; // Toggle between 'ar' and 'en'
+   localStorage.setItem('selectedLanguage', language);
     
     event.target.textContent = language === 'en' ? 'Arabic' : 'English'; // Update button text
     mainSlider.innerHTML = '';  
@@ -213,10 +185,25 @@ let list=document.querySelectorAll('.list-icon');
     setTimeout(() => {
     
       restoreIcons(); 
-    }, 50);
+    }, 250);
 
-    // Fetch movies with the selected language
+
     
+});
+languageSelectorM.addEventListener('click', (event) => {
+  language = event.target.textContent === 'English' ? 'en' : 'ar'; // Toggle between 'ar' and 'en'
+  localStorage.setItem('selectedLanguage', language);
+   
+   event.target.textContent = language === 'en' ? 'Arabic' : 'English'; // Update button text
+   mainSlider.innerHTML = '';  
+   loadSliders();
+   setTimeout(() => {
+   
+     restoreIcons(); 
+   }, 250);
+
+
+   
 });
 // Slider Elements
 const sliderContainer = document.querySelector('.slider-container');
@@ -227,8 +214,7 @@ let startPos = 0;
 let currentTranslate = 0;
 let prevTranslate = 0;
 let animationID;
-
-// Move to the specified slide
+//main slider
 function moveToSlide(index) {
   const mainslideitems = document.querySelectorAll('.main-slide-item');
     const totalSlides = mainslideitems.length;
@@ -244,14 +230,13 @@ function moveToSlide(index) {
 // Handle Arrows
 document.querySelector('.right-arrow').addEventListener('click', () => moveToSlide(currentIndex + 1));
 document.querySelector('.leftarrow').addEventListener('click', () => moveToSlide(currentIndex - 1));
-
-
-
 // Enable Arrow Keys
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') moveToSlide(currentIndex + 1);
     if (e.key === 'ArrowLeft') moveToSlide(currentIndex - 1);
 });
+
+
 let favstorage = JSON.parse(localStorage.getItem('fav')) || [];
 let liststorage = JSON.parse(localStorage.getItem('list')) || [];
 function restoreIcons(){
@@ -325,7 +310,7 @@ document.addEventListener('click', (event) => {
 setTimeout(() => {
   slideshow(slides);
   restoreIcons(); 
-}, 50);
+}, 250);
 
 
 function checkUserSession() {
@@ -352,4 +337,15 @@ logBut.addEventListener('click', () => {
     window.location.reload();
   }
 })
+const menu = document.getElementById("menu-btn");
+const nav = document.querySelector(".mobile-navbar"); // Correctly targets the <nav>
+
+if (menu && nav) {
+    menu.addEventListener("click", () => {
+        nav.classList.toggle("active");
+    });
+} else {
+    console.error("Menu button or navigation bar not found!");
+}
+
 
